@@ -4,8 +4,7 @@
 
   let response = await fetch('https://jsonplaceholder.typicode.com/posts')
   let json = await response.json()
-  console.log(json)
-
+  
   if(json.length > 0){
     postArea.innerHTML = ''
 
@@ -19,5 +18,34 @@
     postArea.innerHTML = 'Nenhum post para ser exibido'
   }
  }
+
+ const addPost = async (title, body) => {
+  await fetch('https://jsonplaceholder.typicode.com/posts',
+   { 
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json'},
+    body: JSON.stringify({ 
+        title,
+        body,
+        userId: 1
+      })
+  })
+
+  document.querySelector('#titleField').value = ''
+  document.querySelector('#bodyField').value = ''
+  readPosts()
+  console.log(`Esse é o titulo ${title} e esse é o conteudo ${body}`)
+ }
+
+ document.querySelector('#insertButton').addEventListener('click', () => {
+  let title = document.querySelector('#titleField').value
+  let body = document.querySelector('#bodyField').value
+
+  if(title && body){
+    addPost(title, body)
+  }else {
+    alert("Preencha os campos corretamente")
+  }
+ })
 
  readPosts()
